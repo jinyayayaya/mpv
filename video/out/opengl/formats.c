@@ -91,6 +91,12 @@ const struct gl_format gl_formats[] = {
     {"rgba12",  GL_RGBA12,   GL_RGBA,            T_U16, F_CF | F_GL2 | F_GL3},
     {"rgb10",   GL_RGB10,    GL_RGB,             T_U16, F_CF | F_GL2 | F_GL3},
 
+    // FBO formats for imported format DRM_FORMAT_{NV15,NV20} (in YUV colorpsace).
+    {"bgr10_a2",     GL_RGB10_A2, GL_RGBA,
+     GL_UNSIGNED_INT_2_10_10_10_REV,                    F_CF | F_GL3 | F_ES3},
+    {"bgr10_a2_yuv", GL_RGB10_A2, GL_RGBA,
+     GL_UNSIGNED_INT_2_10_10_10_REV,                    F_CF | F_GL3 | F_ES3},
+
     // Special formats.
     {"rgb565",  GL_RGB8,     GL_RGB,
      GL_UNSIGNED_SHORT_5_6_5,                           F_TF | F_GL2 | F_GL3},

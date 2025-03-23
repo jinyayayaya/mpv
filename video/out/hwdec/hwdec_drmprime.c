@@ -133,6 +133,7 @@ static int init(struct ra_hwdec *hw)
     MP_TARRAY_APPEND(p, p->formats, num_formats, IMGFMT_420P);
     MP_TARRAY_APPEND(p, p->formats, num_formats, pixfmt2imgfmt(AV_PIX_FMT_NV16));
     MP_TARRAY_APPEND(p, p->formats, num_formats, IMGFMT_P010);
+    MP_TARRAY_APPEND(p, p->formats, num_formats, IMGFMT_BGR30_YUV);
 #ifdef AV_PIX_FMT_P210
     MP_TARRAY_APPEND(p, p->formats, num_formats, pixfmt2imgfmt(AV_PIX_FMT_P210));
 #endif
@@ -203,6 +204,13 @@ static int mapper_init(struct ra_hwdec_mapper *mapper)
     const char* fmt_name = mp_imgfmt_to_name(mapper->src_params.hw_subfmt);
     if (strcmp(fmt_name, "rpi4_8") == 0 || strcmp(fmt_name, "rpi4_10") == 0)
         mapper->dst_params.imgfmt = IMGFMT_NV12;
+    /*
+     * NV15 and NV20 are tightly packed variant of P010 and P210 formats,
+     * which can be sampled as DRM_FORMAT_XBGR2101010 in YUV colorspace.
+     * These two formats are in the process of being upstreamed to ffmpeg.
+     */
+    else if (strcmp(fmt_name, "nv15") == 0 || strcmp(fmt_name, "nv20") == 0)
+        mapper->dst_params.imgfmt = IMGFMT_BGR30_YUV;
     else
         mapper->dst_params.imgfmt = mapper->src_params.hw_subfmt;
     mapper->dst_params.hw_subfmt = 0;
@@ -281,7 +289,10 @@ static int mapper_map(struct ra_hwdec_mapper *mapper)
         num_returned_planes += p->desc.layers[i].nb_planes;
     }
 
-    if (p->num_planes != 0 && p->num_planes != num_returned_planes) {
+    if (p->num_planes != 0 &&
+        p->num_planes != num_returned_planes &&
+        // Two-planes NV15/NV20 will be imported as single-plane BGR30.
+        mapper->dst_params.imgfmt != IMGFMT_BGR30_YUV) {
         MP_ERR(mapper,
                "Mapped surface with format '%s' has unexpected number of planes. "
                "(%d layers and %d planes, but expected %d planes)\n",

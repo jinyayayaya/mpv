@@ -72,6 +72,20 @@ static const struct mp_imgfmt_entry mp_imgfmt_list[] = {
             .comps = { {0, 20, 10}, {0, 10, 10}, {0, 0, 10} },
         },
     },
+    [IMGFMT_BGR30 - IMGFMT_CUST_BASE] = {
+        .name = "bgr30",
+        .desc = {
+            .flags = MP_IMGFLAG_RGB,
+            .comps = { {0, 0, 10}, {0, 10, 10}, {0, 20, 10} },
+        },
+    },
+    [IMGFMT_BGR30_YUV - IMGFMT_CUST_BASE] = {
+        .name = "bgr30_yuv",
+        .desc = {
+            .flags = MP_IMGFLAG_COLOR_YUV,
+            .comps = { {0, 0, 10}, {0, 10, 10}, {0, 20, 10} },
+        },
+    },
     [IMGFMT_YAP8 - IMGFMT_CUST_BASE] = {
         .name = "yap8",
         .desc = {

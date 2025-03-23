@@ -299,6 +299,8 @@ enum mp_imgfmt {
 
     // Accessed with bit-shifts, uint32_t units.
     IMGFMT_RGB30,               // 2pad 10r 10g 10b (MSB to LSB)
+    IMGFMT_BGR30,               // 2pad 10b 10g 10r (MSB to LSB)
+    IMGFMT_BGR30_YUV,           // BGR30 in YUV colorspace. Used for importing NV15/NV20.
 
     // Fringe formats for fringe RGB format repacking.
     IMGFMT_Y1,      // gray with 1 bit per pixel

@@ -141,6 +141,9 @@ static const struct glsl_fmt ra_glsl_fmts[] = {
     {RA_CTYPE_UNORM, 4, {16, 16, 16, 16}, "rgba16"},
     {RA_CTYPE_UNORM, 4, {10, 10, 10,  2}, "rgb10_a2"},
 
+    {RA_CTYPE_UNORM, 4, {10, 10, 10,  2}, "bgr10_a2"},
+    {RA_CTYPE_UNORM, 4, {10, 10, 10,  2}, "bgr10_a2_yuv"},
+
     {RA_CTYPE_UINT,  1, {8},              "r8ui"},
     {RA_CTYPE_UINT,  1, {16},             "r16ui"},
     {RA_CTYPE_UINT,  1, {32},             "r32ui"},
@@ -151,6 +154,9 @@ static const struct glsl_fmt ra_glsl_fmts[] = {
     {RA_CTYPE_UINT,  4, {16, 16, 16, 16}, "rgba16ui"},
     {RA_CTYPE_UINT,  4, {32, 32, 32, 32}, "rgba32ui"},
     {RA_CTYPE_UINT,  4, {10, 10, 10,  2}, "rgb10_a2ui"},
+
+    {RA_CTYPE_UINT,  4, {10, 10, 10,  2}, "bgr10_a2ui"},
+    {RA_CTYPE_UINT,  4, {10, 10, 10,  2}, "bgr10_a2_yuvui"},
 };
 
 const char *ra_fmt_glsl_format(const struct ra_format *fmt)

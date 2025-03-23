@@ -241,6 +241,13 @@ static bool vaapi_gl_map(struct ra_hwdec_mapper *mapper,
 #endif
                 format[0] = DRM_FORMAT_R16;
                 format[1] = DRM_FORMAT_GR1616;
+#ifdef DRM_FORMAT_NV15
+            case DRM_FORMAT_NV15:
+#endif
+#ifdef DRM_FORMAT_NV20
+            case DRM_FORMAT_NV20:
+            /* Two-planes NV15/NV20 will be imported as single-plane BGR30 */
+#endif
                 break;
             default:
                 mp_msg(mapper->log, probing ? MSGL_DEBUG : MSGL_ERR,
@@ -291,6 +298,21 @@ static bool vaapi_gl_map(struct ra_hwdec_mapper *mapper,
             ADD_ATTRIB(EGL_WIDTH,  p_mapper->tex[n]->params.w);
             ADD_ATTRIB(EGL_HEIGHT, p_mapper->tex[n]->params.h);
             ADD_PLANE_ATTRIBS(0);
+
+#if defined(DRM_FORMAT_NV15) || defined(DRM_FORMAT_NV20)
+            switch (format[0]) {
+#ifdef DRM_FORMAT_NV15
+            case DRM_FORMAT_NV15:
+#endif
+#ifdef DRM_FORMAT_NV20
+            case DRM_FORMAT_NV20:
+            /* Two-planes NV15/NV20 will be imported as single-plane BGR30 */
+#endif
+                ++j;
+                ADD_PLANE_ATTRIBS(1);
+                break;
+            }
+#endif
 
             p->images[n] = p->CreateImageKHR(eglGetCurrentDisplay(),
                 EGL_NO_CONTEXT, EGL_LINUX_DMA_BUF_EXT, NULL, attribs);
