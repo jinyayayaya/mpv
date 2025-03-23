@@ -115,7 +115,7 @@ static int init(struct ra_hwdec *hw)
     MP_VERBOSE(hw, "Using DRM device: %s\n", device_path);
 
     int ret = av_hwdevice_ctx_create(&p->hwctx.av_device_ref,
-                                     AV_HWDEVICE_TYPE_DRM,
+                                     hw->driver->device_type,
                                      device_path, NULL, 0);
     talloc_free(tmp);
     if (ret != 0) {
@@ -308,6 +308,23 @@ const struct ra_hwdec_driver ra_hwdec_drmprime = {
     .priv_size = sizeof(struct priv_owner),
     .imgfmts = {IMGFMT_DRMPRIME, 0},
     .device_type = AV_HWDEVICE_TYPE_DRM,
+    .init = init,
+    .uninit = uninit,
+    .mapper = &(const struct ra_hwdec_mapper_driver){
+        .priv_size = sizeof(struct dmabuf_interop_priv),
+        .init = mapper_init,
+        .uninit = mapper_uninit,
+        .map = mapper_map,
+        .unmap = mapper_unmap,
+    },
+};
+
+
+const struct ra_hwdec_driver ra_hwdec_drmprime_rkmpp = {
+    .name = "drmprime_rkmpp",
+    .priv_size = sizeof(struct priv_owner),
+    .imgfmts = {IMGFMT_DRMPRIME, 0},
+    .device_type = AV_HWDEVICE_TYPE_RKMPP,
     .init = init,
     .uninit = uninit,
     .mapper = &(const struct ra_hwdec_mapper_driver){

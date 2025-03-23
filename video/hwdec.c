@@ -124,6 +124,7 @@ static const struct hwcontext_fns *const hwcontext_fns[] = {
 #endif
 #if HAVE_DRM
     &hwcontext_fns_drmprime,
+    &hwcontext_fns_rkmpp,
 #endif
 #if HAVE_VAAPI
     &hwcontext_fns_vaapi,

@@ -41,3 +41,8 @@ const struct hwcontext_fns hwcontext_fns_drmprime = {
     .av_hwdevice_type = AV_HWDEVICE_TYPE_DRM,
     .create_dev = drm_create_standalone,
 };
+
+const struct hwcontext_fns hwcontext_fns_rkmpp = {
+    .av_hwdevice_type = AV_HWDEVICE_TYPE_RKMPP,
+    .create_dev = drm_create_standalone,
+};
