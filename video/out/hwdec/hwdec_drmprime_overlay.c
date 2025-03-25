@@ -333,3 +333,13 @@ const struct ra_hwdec_driver ra_hwdec_drmprime_overlay = {
     .overlay_frame = overlay_frame,
     .uninit = uninit,
 };
+
+const struct ra_hwdec_driver ra_hwdec_drmprime_rkmpp_overlay = {
+    .name = "drmprime-overlay",
+    .priv_size = sizeof(struct priv),
+    .imgfmts = {IMGFMT_DRMPRIME, 0},
+    .device_type = AV_HWDEVICE_TYPE_RKMPP,
+    .init = init,
+    .overlay_frame = overlay_frame,
+    .uninit = uninit,
+};
