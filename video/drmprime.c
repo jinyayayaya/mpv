@@ -42,7 +42,15 @@ const struct hwcontext_fns hwcontext_fns_drmprime = {
     .create_dev = drm_create_standalone,
 };
 
+static struct AVBufferRef *rkmpp_create_standalone(struct mpv_global *global,
+        struct mp_log *log, struct hwcontext_create_dev_params *params)
+{
+    AVBufferRef* ref = NULL;
+    av_hwdevice_ctx_create(&ref, AV_HWDEVICE_TYPE_RKMPP, NULL, NULL, 0);
+    return ref;
+}
+
 const struct hwcontext_fns hwcontext_fns_rkmpp = {
     .av_hwdevice_type = AV_HWDEVICE_TYPE_RKMPP,
-    .create_dev = drm_create_standalone,
+    .create_dev = rkmpp_create_standalone,
 };
